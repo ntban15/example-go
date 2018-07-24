@@ -2,7 +2,7 @@
 
 **Library API excercise** is a golang implement(using go-kit, gorm) of library API
 
-Submitted by: **{{github_user_name}}**
+Submitted by: **ntban15**
 
 Time spent: **{{time_spent}}** hours spent in total
 
@@ -130,7 +130,7 @@ Notes about current git.
 
 ## License
 
-    Copyright [2018] [{{github_user_name}}]
+    Copyright [2018] [ntban15]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
