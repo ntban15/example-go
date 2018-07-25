@@ -20,8 +20,25 @@ func NewPGService(db *gorm.DB) Service {
 	}
 }
 
+// Find category in database with the name and is not deleted
+func validateUniqueName(s *pgService, p *domain.Category) error {
+	category := domain.Category{}
+	if err := s.db.Where("name = ?", p.Name).Find(&category).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil
+		}
+		return err
+	}
+
+	return ErrNameIsDuplicated
+}
+
 // Create implement Create for Category service
 func (s *pgService) Create(_ context.Context, p *domain.Category) error {
+	if err := validateUniqueName(s, p); err != nil {
+		return err
+	}
+
 	return s.db.Create(p).Error
 }
 
@@ -35,8 +52,11 @@ func (s *pgService) Update(_ context.Context, p *domain.Category) (*domain.Categ
 		return nil, err
 	}
 
-	old.Name = p.Name
+	if err := validateUniqueName(s, p); err != nil {
+		return nil, err
+	}
 
+	old.Name = p.Name
 	return &old, s.db.Save(&old).Error
 }
 

@@ -4,8 +4,9 @@ import "net/http"
 
 // Error Declaration
 var (
-	ErrNameIsRequired = errNameIsRequired{}
-	ErrNameIsShorter  = errNameIsShorter{}
+	ErrNameIsRequired   = errNameIsRequired{}
+	ErrNameIsShorter    = errNameIsShorter{}
+	ErrNameIsDuplicated = errNameIsDuplicated{}
 )
 
 type errNameIsRequired struct{}
@@ -25,5 +26,15 @@ func (errNameIsShorter) Error() string {
 }
 
 func (errNameIsShorter) StatusCode() int {
+	return http.StatusBadRequest
+}
+
+type errNameIsDuplicated struct{}
+
+func (errNameIsDuplicated) Error() string {
+	return "category name exists"
+}
+
+func (errNameIsDuplicated) StatusCode() int {
 	return http.StatusBadRequest
 }
