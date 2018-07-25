@@ -5,6 +5,7 @@ import (
 	"github.com/ntban15/example-go/service"
 
 	"github.com/ntban15/example-go/endpoints/book"
+	"github.com/ntban15/example-go/endpoints/borrow"
 	"github.com/ntban15/example-go/endpoints/category"
 	"github.com/ntban15/example-go/endpoints/user"
 )
@@ -28,6 +29,12 @@ type Endpoints struct {
 	CreateBook  endpoint.Endpoint
 	UpdateBook  endpoint.Endpoint
 	DeleteBook  endpoint.Endpoint
+
+	FindBorrowRecord    endpoint.Endpoint
+	FindAllBorrowRecord endpoint.Endpoint
+	CreateBorrowRecord  endpoint.Endpoint
+	UpdateBorrowRecord  endpoint.Endpoint
+	DeleteBorrowRecord  endpoint.Endpoint
 }
 
 // MakeServerEndpoints returns an Endpoints struct
@@ -50,5 +57,11 @@ func MakeServerEndpoints(s service.Service) Endpoints {
 		CreateBook:  book.MakeCreateEndpoint(s),
 		UpdateBook:  book.MakeUpdateEndpoint(s),
 		DeleteBook:  book.MakeDeleteEndpoint(s),
+
+		FindBorrowRecord:    borrow.MakeFindEndPoint(s),
+		FindAllBorrowRecord: borrow.MakeFindAllEndpoint(s),
+		CreateBorrowRecord:  borrow.MakeCreateEndpoint(s),
+		UpdateBorrowRecord:  borrow.MakeUpdateEndpoint(s),
+		DeleteBorrowRecord:  borrow.MakeDeleteEndpoint(s),
 	}
 }
