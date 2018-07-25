@@ -25,7 +25,7 @@ func validateUniqueName(s *pgService, p *domain.Category) error {
 	category := domain.Category{}
 	if err := s.db.Where("name = ?", p.Name).Find(&category).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil
+			return ErrNotFound
 		}
 		return err
 	}
@@ -47,7 +47,7 @@ func (s *pgService) Update(_ context.Context, p *domain.Category) (*domain.Categ
 	old := domain.Category{Model: domain.Model{ID: p.ID}}
 	if err := s.db.Find(&old).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (s *pgService) Find(_ context.Context, p *domain.Category) (*domain.Categor
 	res := p
 	if err := s.db.Find(&res).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (s *pgService) Delete(_ context.Context, p *domain.Category) error {
 	old := domain.Category{Model: domain.Model{ID: p.ID}}
 	if err := s.db.Find(&old).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil
+			return ErrNotFound
 		}
 		return err
 	}
