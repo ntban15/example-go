@@ -4,10 +4,21 @@ import "net/http"
 
 // Error Declaration
 var (
+	ErrNotFound           = errNotFound{}
 	ErrCategoryIDNotExist = errCategoryIDNotExist{}
 	ErrNameLength         = errNameLength{}
 	ErrDescriptionLength  = errDescriptionLength{}
 )
+
+type errNotFound struct{}
+
+func (errNotFound) Error() string {
+	return "record not found"
+}
+
+func (errNotFound) StatusCode() int {
+	return http.StatusBadRequest
+}
 
 type errCategoryIDNotExist struct{}
 

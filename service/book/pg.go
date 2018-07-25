@@ -46,7 +46,7 @@ func (s *pgService) Update(_ context.Context, p *domain.Book) (*domain.Book, err
 	old := domain.Book{Model: domain.Model{ID: p.ID}}
 	if err := s.db.Find(&old).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (s *pgService) Find(_ context.Context, p *domain.Book) (*domain.Book, error
 	res := p
 	if err := s.db.Find(&res).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (s *pgService) Delete(_ context.Context, p *domain.Book) error {
 	old := domain.Book{Model: domain.Model{ID: p.ID}}
 	if err := s.db.Find(&old).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil
+			return ErrNotFound
 		}
 		return err
 	}
