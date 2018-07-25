@@ -4,10 +4,21 @@ import "net/http"
 
 // Error Declaration
 var (
+	ErrNotFound         = errNotFound{}
 	ErrNameIsRequired   = errNameIsRequired{}
-	ErrNameIsShorter    = errNameIsShorter{}
+	ErrNameLength       = errNameLength{}
 	ErrNameIsDuplicated = errNameIsDuplicated{}
 )
+
+type errNotFound struct{}
+
+func (errNotFound) Error() string {
+	return "record not found"
+}
+
+func (errNotFound) StatusCode() int {
+	return http.StatusBadRequest
+}
 
 type errNameIsRequired struct{}
 
@@ -19,13 +30,13 @@ func (errNameIsRequired) StatusCode() int {
 	return http.StatusBadRequest
 }
 
-type errNameIsShorter struct{}
+type errNameLength struct{}
 
-func (errNameIsShorter) Error() string {
+func (errNameLength) Error() string {
 	return "name must be longer than 5 characters"
 }
 
-func (errNameIsShorter) StatusCode() int {
+func (errNameLength) StatusCode() int {
 	return http.StatusBadRequest
 }
 
