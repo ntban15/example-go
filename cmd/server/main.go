@@ -16,6 +16,7 @@ import (
 	"github.com/ntban15/example-go/endpoints"
 	serviceHttp "github.com/ntban15/example-go/http"
 	"github.com/ntban15/example-go/service"
+	bookSvc "github.com/ntban15/example-go/service/book"
 	categorySvc "github.com/ntban15/example-go/service/category"
 	userSvc "github.com/ntban15/example-go/service/user"
 )
@@ -62,6 +63,10 @@ func main() {
 				categorySvc.NewPGService(pgDB),
 				categorySvc.ValidationMiddleware(),
 			).(categorySvc.Service),
+			BookService: service.Compose(
+				bookSvc.NewPGService(pgDB),
+				bookSvc.ValidationMiddleware(),
+			).(bookSvc.Service),
 		}
 	)
 	defer closeDB()
