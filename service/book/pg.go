@@ -20,8 +20,24 @@ func NewPGService(db *gorm.DB) Service {
 	}
 }
 
+func validateCategoryExist(s *pgService, p *domain.Book) error {
+	category := domain.Category{}
+	if err := s.db.Where("id = ?", p.CategoryID).Find(&category).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return ErrCategoryIDNotExist
+		}
+		return err
+	}
+
+	return nil
+}
+
 // Create implement Create for Book service
 func (s *pgService) Create(_ context.Context, p *domain.Book) error {
+	if err := validateCategoryExist(s, p); err != nil {
+		return err
+	}
+
 	return s.db.Create(p).Error
 }
 
@@ -32,6 +48,10 @@ func (s *pgService) Update(_ context.Context, p *domain.Book) (*domain.Book, err
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}
+		return nil, err
+	}
+
+	if err := validateCategoryExist(s, p); err != nil {
 		return nil, err
 	}
 
